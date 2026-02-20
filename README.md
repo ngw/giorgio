@@ -172,193 +172,14 @@ animale = {
 nome_animale = animale[:nome]  # "Rex"
 ```
 
----
+### ✏️ Esercizi - Primissimi Passi
 
-## 🔧 Metodi
+Ora che conosci i tipi di dato base, prova questi esercizi:
 
-I metodi (o funzioni) sono come ricette: un insieme di istruzioni con un nome che puoi riutilizzare!
-
-### Creare un Metodo Semplice
-
-```ruby
-def saluta
-  puts "Ciao!"
-end
-
-# Chiamare il metodo:
-saluta  # Stampa: Ciao!
-```
-
-### Metodi con Parametri
-
-I parametri sono come ingredienti della ricetta:
-
-```ruby
-def saluta_persona(nome)
-  puts "Ciao #{nome}!"
-end
-
-saluta_persona("Marco")   # Ciao Marco!
-saluta_persona("Sofia")   # Ciao Sofia!
-```
-
-Con più parametri:
-```ruby
-def somma(a, b)
-  risultato = a + b
-  puts "#{a} + #{b} = #{risultato}"
-end
-
-somma(5, 3)   # 5 + 3 = 8
-somma(10, 7)  # 10 + 7 = 17
-```
-
-### Metodi che Restituiscono Valori
-
-I metodi possono calcolare e restituire un valore:
-
-```ruby
-def moltiplica(a, b)
-  return a * b
-end
-
-risultato = moltiplica(4, 5)
-puts risultato  # 20
-
-# In Ruby, return è opzionale (restituisce l'ultima riga):
-def dividi(a, b)
-  a / b  # viene restituito automaticamente
-end
-
-puts dividi(10, 2)  # 5
-```
-
-### Parametri con Valori Predefiniti
-
-Puoi dare valori di default ai parametri:
-
-```ruby
-def saluta(nome = "amico")
-  puts "Ciao #{nome}!"
-end
-
-saluta("Luca")  # Ciao Luca!
-saluta          # Ciao amico!
-```
-
-### Metodi Utili
-
-Esempio di metodi pratici:
-
-```ruby
-# Controllare se un numero è pari
-def pari?(numero)
-  numero % 2 == 0
-end
-
-puts pari?(4)   # true
-puts pari?(7)   # false
-
-# Nota: in Ruby i metodi che restituiscono true/false
-# spesso finiscono con ?
-
-# Calcolare l'area di un rettangolo
-def area_rettangolo(base, altezza)
-  base * altezza
-end
-
-area = area_rettangolo(5, 3)
-puts "L'area è #{area}"  # L'area è 15
-
-# Convertire temperatura Celsius in Fahrenheit
-def celsius_a_fahrenheit(celsius)
-  (celsius * 9.0 / 5.0) + 32
-end
-
-puts celsius_a_fahrenheit(0)    # 32.0
-puts celsius_a_fahrenheit(100)  # 212.0
-```
-
-### Metodi con Più Return
-
-Puoi uscire prima da un metodo:
-
-```ruby
-def puo_guidare(eta)
-  if eta < 18
-    return "Troppo giovane!"
-  end
-  
-  if eta >= 90
-    return "Forse è meglio il taxi!"
-  end
-  
-  "Puoi guidare!"
-end
-
-puts puo_guidare(15)  # Troppo giovane!
-puts puo_guidare(25)  # Puoi guidare!
-puts puo_guidare(95)  # Forse è meglio il taxi!
-```
-
----
-
-## 🏗️ Classi
-
-Le classi sono come stampi per creare oggetti. Immagina uno stampo per i biscotti!
-
-### Creare una Classe Semplice
-
-```ruby
-class Cane
-  # Il metodo initialize si chiama automaticamente quando crei un nuovo cane
-  def initialize(nome, razza)
-    @nome = nome    # @ significa che è una variabile della classe
-    @razza = razza
-  end
-  
-  # Metodo per far abbaiare il cane
-  def abbaia
-    puts "#{@nome} fa: Bau bau!"
-  end
-  
-  # Metodo per mostrare informazioni
-  def informazioni
-    puts "Mi chiamo #{@nome} e sono un #{@razza}"
-  end
-end
-
-# Creare oggetti dalla classe:
-il_mio_cane = Cane.new("Fido", "Labrador")
-il_mio_cane.abbaia  # Fido fa: Bau bau!
-il_mio_cane.informazioni  # Mi chiamo Fido e sono un Labrador
-```
-
-### Esempio: Classe Giocatore
-
-```ruby
-class Giocatore
-  def initialize(nome)
-    @nome = nome
-    @punti = 0
-  end
-  
-  def guadagna_punti(quantita)
-    @punti = @punti + quantita
-    puts "#{@nome} ha guadagnato #{quantita} punti!"
-  end
-  
-  def mostra_punteggio
-    puts "#{@nome} ha #{@punti} punti"
-  end
-end
-
-# Giochiamo!
-giocatore1 = Giocatore.new("Marco")
-giocatore1.guadagna_punti(10)  # Marco ha guadagnato 10 punti!
-giocatore1.guadagna_punti(5)   # Marco ha guadagnato 5 punti!
-giocatore1.mostra_punteggio    # Marco ha 15 punti
-```
+1. Crea una variabile con il tuo nome e stampala
+2. Fai una somma di due numeri e stampa il risultato  
+3. Crea un array con 3 nomi di animali e stampalo
+4. Crea un hash con simboli come chiavi: `{nome: "Mario", eta: 10}`
 
 ---
 
@@ -518,6 +339,18 @@ else
 end
 ```
 
+### ✏️ Esercizi - Condizionali e Case/When
+
+Mettiamo in pratica if, elsif, unless e case/when:
+
+1. Scrivi un programma che dice se un numero è pari o dispari
+2. Usa un `unless` per stampare un messaggio se NON piove
+3. Crea un if che controlla se un numero è maggiore di 10
+4. Usa `case/when` per tradurre numeri 1-7 in giorni della settimana
+5. Crea un menu semplice (1=Gioca, 2=Opzioni, 3=Esci) con `case/when`
+6. Fai un programma che controlla se una variabile è `nil` prima di usarla
+7. Scrivi un metodo che restituisce un valore o `nil` in base a una condizione
+
 ---
 
 ## 🔁 Cicli
@@ -608,6 +441,223 @@ end
   puts numero  # stampa solo i dispari
 end
 ```
+
+### ✏️ Esercizi - Cicli
+
+Pratica con i cicli:
+
+1. Usa un ciclo `.times` per stampare "Ciao!" 5 volte
+2. Fai un ciclo che stampa i numeri da 1 a 10
+3. Crea un array di colori e stampali uno per uno con `.each`
+4. Fai un ciclo che conta alla rovescia da 10 a 0
+5. Usa `.each` con un range per stampare i numeri da 1 a 20
+
+---
+
+## 🔧 Metodi
+
+I metodi (o funzioni) sono come ricette: un insieme di istruzioni con un nome che puoi riutilizzare!
+
+### Creare un Metodo Semplice
+
+```ruby
+def saluta
+  puts "Ciao!"
+end
+
+# Chiamare il metodo:
+saluta  # Stampa: Ciao!
+```
+
+### Metodi con Parametri
+
+I parametri sono come ingredienti della ricetta:
+
+```ruby
+def saluta_persona(nome)
+  puts "Ciao #{nome}!"
+end
+
+saluta_persona("Marco")   # Ciao Marco!
+saluta_persona("Sofia")   # Ciao Sofia!
+```
+
+Con più parametri:
+```ruby
+def somma(a, b)
+  risultato = a + b
+  puts "#{a} + #{b} = #{risultato}"
+end
+
+somma(5, 3)   # 5 + 3 = 8
+somma(10, 7)  # 10 + 7 = 17
+```
+
+### Metodi che Restituiscono Valori
+
+I metodi possono calcolare e restituire un valore:
+
+```ruby
+def moltiplica(a, b)
+  return a * b
+end
+
+risultato = moltiplica(4, 5)
+puts risultato  # 20
+
+# In Ruby, return è opzionale (restituisce l'ultima riga):
+def dividi(a, b)
+  a / b  # viene restituito automaticamente
+end
+
+puts dividi(10, 2)  # 5
+```
+
+### Parametri con Valori Predefiniti
+
+Puoi dare valori di default ai parametri:
+
+```ruby
+def saluta(nome = "amico")
+  puts "Ciao #{nome}!"
+end
+
+saluta("Luca")  # Ciao Luca!
+saluta          # Ciao amico!
+```
+
+### Metodi Utili
+
+Esempio di metodi pratici:
+
+```ruby
+# Controllare se un numero è pari
+def pari?(numero)
+  numero % 2 == 0
+end
+
+puts pari?(4)   # true
+puts pari?(7)   # false
+
+# Nota: in Ruby i metodi che restituiscono true/false
+# spesso finiscono con ?
+
+# Calcolare l'area di un rettangolo
+def area_rettangolo(base, altezza)
+  base * altezza
+end
+
+area = area_rettangolo(5, 3)
+puts "L'area è #{area}"  # L'area è 15
+
+# Convertire temperatura Celsius in Fahrenheit
+def celsius_a_fahrenheit(celsius)
+  (celsius * 9.0 / 5.0) + 32
+end
+
+puts celsius_a_fahrenheit(0)    # 32.0
+puts celsius_a_fahrenheit(100)  # 212.0
+```
+
+### Metodi con Più Return
+
+Puoi uscire prima da un metodo:
+
+```ruby
+def puo_guidare(eta)
+  if eta < 18
+    return "Troppo giovane!"
+  end
+  
+  if eta >= 90
+    return "Forse è meglio il taxi!"
+  end
+  
+  "Puoi guidare!"
+end
+
+puts puo_guidare(15)  # Troppo giovane!
+puts puo_guidare(25)  # Puoi guidare!
+puts puo_guidare(95)  # Forse è meglio il taxi!
+```
+
+### ✏️ Esercizi - Metodi
+
+Pratica la creazione di metodi:
+
+1. Crea un metodo `saluta(nome)` che stampa "Ciao [nome]!"
+2. Scrivi un metodo `raddoppia(numero)` che restituisce il doppio
+3. Fai un metodo `e_maggiorenne?(eta)` che restituisce true/false
+4. Crea un metodo `somma_tre(a, b, c)` che somma tre numeri
+5. Scrivi un metodo con un parametro predefinito: `presenta(nome = "Ospite")`
+
+---
+
+## 🏗️ Classi
+
+Le classi sono come stampi per creare oggetti. Immagina uno stampo per i biscotti!
+
+### Creare una Classe Semplice
+
+```ruby
+class Cane
+  # Il metodo initialize si chiama automaticamente quando crei un nuovo cane
+  def initialize(nome, razza)
+    @nome = nome    # @ significa che è una variabile della classe
+    @razza = razza
+  end
+  
+  # Metodo per far abbaiare il cane
+  def abbaia
+    puts "#{@nome} fa: Bau bau!"
+  end
+  
+  # Metodo per mostrare informazioni
+  def informazioni
+    puts "Mi chiamo #{@nome} e sono un #{@razza}"
+  end
+end
+
+# Creare oggetti dalla classe:
+il_mio_cane = Cane.new("Fido", "Labrador")
+il_mio_cane.abbaia  # Fido fa: Bau bau!
+il_mio_cane.informazioni  # Mi chiamo Fido e sono un Labrador
+```
+
+### Esempio: Classe Giocatore
+
+```ruby
+class Giocatore
+  def initialize(nome)
+    @nome = nome
+    @punti = 0
+  end
+  
+  def guadagna_punti(quantita)
+    @punti = @punti + quantita
+    puts "#{@nome} ha guadagnato #{quantita} punti!"
+  end
+  
+  def mostra_punteggio
+    puts "#{@nome} ha #{@punti} punti"
+  end
+end
+
+# Giochiamo!
+giocatore1 = Giocatore.new("Marco")
+giocatore1.guadagna_punti(10)  # Marco ha guadagnato 10 punti!
+giocatore1.guadagna_punti(5)   # Marco ha guadagnato 5 punti!
+giocatore1.mostra_punteggio    # Marco ha 15 punti
+```
+
+### ✏️ Esercizi - Classi
+
+Crea le tue prime classi:
+
+1. Crea una classe `Cane` con nome e metodo `abbaia`
+2. Fai una classe `Contatore` che può aumentare/diminuire un numero
+3. Scrivi una classe `Robot` con nome e livello di batteria
+4. Crea una classe `Studente` con nome, voti (array), e metodo per calcolare la media
 
 ---
 
@@ -702,116 +752,24 @@ lista.mostra_lista
 puts lista.conta_prodotti
 ```
 
----
+### ✏️ Progetti Completi - Metti Tutto Insieme!
 
-## � Come Funziona il Guessing Game
+Ora che conosci tutti i concetti, prova questi progetti:
 
-Analizziamo passo passo il gioco "Indovina il Numero" (`guessing_game.rb`) per capire come funziona:
+1. **Calcolatrice**: chiedi due numeri e un'operazione (+, -, *, /), usa `case/when` per scegliere
+2. **Quiz Game**: crea 3-5 domande, conta le risposte corrette, mostra il punteggio finale
+3. **Lista della spesa**: classe con array di prodotti, metodi per aggiungere/rimuovere/mostrare
+4. **Sistema di battaglia**: due personaggi (classi) che attaccano a turno finché uno perde
+5. **Gestore di contatti**: salva nome/telefono in hash, cerca per nome, aggiungi nuovi contatti
+6. **Mini avventura**: più stanze (usa simboli), raccogli oggetti, usa case/when per azioni, vinci trovando il tesoro!
 
-### 1. Preparazione del Gioco
-
-```ruby
-secret_number = rand(1..100)
-attempts = 0
-max_attempts = 10
-```
-
-- `rand(1..100)` genera un numero casuale tra 1 e 100 che il giocatore deve indovinare
-- `attempts` conta quanti tentativi ha fatto il giocatore (parte da 0)
-- `max_attempts` è il limite massimo di tentativi disponibili
-
-### 2. Il Ciclo Principale
-
-```ruby
-loop do
-  # Il gioco continua finché non si usa "break"
-end
-```
-
-Il gioco usa un ciclo infinito `loop do...end` che si ripete continuamente. Il ciclo si ferma solo quando:
-- Il giocatore indovina il numero (`break`)
-- Finiscono i tentativi (`break`)
-
-### 3. Leggere l'Input del Giocatore
-
-```ruby
-print "Enter your guess: "
-guess = gets.chomp.to_i
-attempts += 1
-```
-
-- `gets.chomp` legge quello che scrive l'utente
-- `.to_i` converte il testo in numero
-- `attempts += 1` aumenta il contatore dei tentativi
-
-### 4. Controllare la Risposta
-
-Il gioco usa una catena di `if/elsif/else` per controllare la risposta:
-
-**Caso 1: Numero Indovinato! 🎉**
-```ruby
-if guess == secret_number
-  puts "🎉 Congratulations! You guessed it!"
-  break  # Esce dal ciclo
-end
-```
-
-**Caso 2: Tentativi Esauriti 😞**
-```ruby
-elsif attempts >= max_attempts
-  puts "Game Over!"
-  break  # Esce dal ciclo
-end
-```
-
-**Caso 3: Numero Troppo Basso**
-```ruby
-elsif guess < secret_number
-  puts "Too low! Try again."
-end
-```
-
-**Caso 4: Numero Troppo Alto**
-```ruby
-else  # se non è uguale e non è minore, allora è maggiore
-  puts "Too high! Try again."
-end
-```
-
-### 5. Esempio di Partita
-
-Immaginiamo che il numero segreto sia **42**:
-
-```
-Tentativo 1: giocatore scrive 50
-→ "Too high!" (tentativi rimanenti: 9)
-
-Tentativo 2: giocatore scrive 30
-→ "Too low!" (tentativi rimanenti: 8)
-
-Tentativo 3: giocatore scrive 40
-→ "Too low!" (tentativi rimanenti: 7)
-
-Tentativo 4: giocatore scrive 42
-→ "🎉 Congratulations! You guessed it!"
-→ Gioco finito in 4 tentativi
-```
-
-### 6. Perché È Interessante?
-
-Questo gioco combina diversi concetti:
-- **Variabili**: per memorizzare numero segreto, tentativi, ecc.
-- **Input/Output**: leggere dalla tastiera e stampare sullo schermo
-- **Cicli**: `loop do` per ripetere il gioco
-- **Condizionali**: `if/elsif/else` per fare scelte
-- **Operatori**: confronti come `==`, `<`, `>`, `>=`
-- **Break**: per uscire dal ciclo quando necessario
-
-È un ottimo esempio di come diversi concetti di programmazione lavorano insieme per creare qualcosa di divertente!
+**💡 Vuoi vedere come funzionano i giochi di esempio?**
+- [Spiegazione Guessing Game](esempi/guessing_game.md) - Analisi del gioco "Indovina il Numero"
+- [Spiegazione Jungle Adventure](esempi/jungle_adventure.md) - Analisi del gioco avventura testuale
 
 ---
 
-## �🌟 Suggerimenti Utili
+## 🌟 Suggerimenti Utili
 
 1. **Commenti**: Usa `#` per scrivere note nel codice
    ```ruby
@@ -839,16 +797,6 @@ Questo gioco combina diversi concetti:
    "3.14".to_f    # stringa → numero decimale (3.14)
    10.to_s        # numero → stringa ("10")
    ```
-
----
-
-## 🚀 Esercizi da Provare
-
-1. Crea una classe `Robot` con nome e livello di batteria
-2. Scrivi un programma che stampa i numeri da 1 a 100
-3. Fai un array dei tuoi colori preferiti e stampali tutti
-4. Crea un programma che dice se un numero è pari o dispari
-5. Fai un ciclo che conta alla rovescia da 10 a 0!
 
 ---
 
