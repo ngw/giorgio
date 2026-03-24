@@ -1,0 +1,7 @@
+# frozen_string_literal: true
+
+source "https://rubygems.org"
+
+# curses: gestisce lo schermo del terminale e la tastiera
+# senza bisogno di Thread o codici ANSI complicati!
+gem "curses", "~> 1.4"
