@@ -65,7 +65,7 @@ LUNGHEZZA_INIZIALE = 3
 # SIMBOLO_TESTA, SIMBOLO_CORPO, SIMBOLO_CIBO, SIMBOLO_MURO:
 # I caratteri usati per disegnare il gioco. Puoi cambiarli!
 # Prova: "@" per la testa, "*" per il corpo, "♥" per il cibo...
-SIMBOLO_TESTA = "O"
+SIMBOLO_TESTA = "G"
 SIMBOLO_CORPO = "o"
 SIMBOLO_CIBO  = "$"
 SIMBOLO_MURO  = "#"
