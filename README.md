@@ -1505,6 +1505,20 @@ Ora che conosci tutti i concetti, prova questi progetti:
 
 ---
 
+## 🗂️ Git – Salvare il Codice
+
+Quando il tuo programma funziona, salvalo con Git così puoi sempre tornare indietro!
+
+Leggi la guida rapida: [git.md](git.md)
+
+```bash
+git add .
+git commit -m "Il mio programma funziona!"
+git push
+```
+
+---
+
 ## 🎓 Ricorda
 
 - **Divertiti!** Programmare è come giocare con i LEGO digitali
