@@ -728,6 +728,35 @@ eccellenti = voti.count { |v| v >= 9 }
 # => 2
 ```
 
+### `include?` – controlla se un elemento è nella lista
+
+```ruby
+frutta = ["mela", "pera", "banana"]
+frutta.include?("pera")     # => true
+frutta.include?("anguria")  # => false
+```
+
+Funziona anche con Array di Array (come le posizioni nel labirinto):
+
+```ruby
+portali = [[5, 3], [12, 7], [4, 18]]
+portali.include?([12, 7])   # => true
+portali.include?([0, 0])    # => false
+```
+
+### `sample` – elemento casuale
+
+`sample` pesca **a caso** un elemento dalla lista. Ogni volta può dare un risultato diverso:
+
+```ruby
+colori = ["rosso", "verde", "blu", "giallo"]
+colori.sample   # => "verde"  (dipende dalla fortuna!)
+colori.sample   # => "rosso"
+```
+
+Nel labirinto `sample` serve per scegliere una direzione casuale dei nemici,
+o per mandare il giocatore in un portale a caso tra quelli disponibili.
+
 ### `group_by` – raggruppa per criterio
 
 ```ruby
@@ -750,6 +779,43 @@ tanti = inventario.select { |_nome, quantita| quantita > 1 }
 2. Da un Array di nomi, usa `reject` per togliere quelli più corti di 4 lettere
 3. Usa `count` per contare quanti numeri pari ci sono in un Array
 4. Usa `group_by` per raggruppare un Array di parole per lunghezza
+5. Usa `include?` per controllare se "cane" è nella lista `["gatto", "cane", "topo"]`
+6. Usa `sample` per scegliere un premio a caso da una lista di 5 premi
+
+---
+
+## ➗ Operatore Modulo `%`
+
+L'operatore `%` calcola il **resto** della divisione. È super utile!
+
+```ruby
+10 % 3   # => 1   (10 diviso 3 fa 3, resto 1)
+8  % 2   # => 0   (8 diviso 2 fa 4, resto 0 → è pari!)
+7  % 2   # => 1   (7 diviso 2 fa 3, resto 1 → è dispari!)
+```
+
+**Trucco per sapere se un numero è pari:**
+
+```ruby
+numero = 6
+if numero % 2 == 0
+  puts "#{numero} è pari!"
+else
+  puts "#{numero} è dispari!"
+end
+```
+
+**Trucco per "avvolgersi" in una lista** (come i portali del labirinto):
+
+```ruby
+portali = ["A", "B", "C"]   # 3 portali, indici 0, 1, 2
+
+(0 + 1) % 3   # => 1  (da A si va a B)
+(1 + 1) % 3   # => 2  (da B si va a C)
+(2 + 1) % 3   # => 0  (da C si torna ad A!) ← il trucco!
+```
+
+`%` fa "ricominciare da capo" quando si arriva alla fine. Utile per le classifiche circolari, i turni di gioco, e i portali!
 
 ---
 
@@ -1102,6 +1168,42 @@ Le lambda sono come biglietti con una **ricetta**: non cucini subito, ma conserv
 
 ---
 
+## ↩️ `return` anticipato e `return nil unless`
+
+In un metodo puoi **uscire prima** usando `return`. Questo evita di annidare tanti `if`:
+
+```ruby
+# ❌ Con tanti if annidati (difficile da leggere)
+def controlla(numero)
+  if numero > 0
+    if numero < 100
+      puts "#{numero} è valido!"
+    end
+  end
+end
+
+# ✅ Con return anticipato (più chiaro!)
+def controlla(numero)
+  return if numero <= 0      # esci subito se non valido
+  return if numero >= 100    # esci subito se troppo grande
+  puts "#{numero} è valido!"
+end
+```
+
+**Il pattern `return nil unless`** – uscire subito se una condizione non è soddisfatta:
+
+```ruby
+def trova_portale(posizione, lista_portali)
+  return nil unless lista_portali.include?(posizione)  # non c'è? torna nil
+  # da qui sei sicuro che esiste
+  lista_portali.reject { |p| p == posizione }.sample
+end
+```
+
+Leggi `return nil unless ...` come: *"torna indietro con niente, a meno che..."*
+
+---
+
 ## 🚨 Gestione errori (`begin` / `rescue` / `ensure`)
 
 A volte il codice può fallire: un file non esiste, un numero è sbagliato, la rete non funziona. Invece di far crashare il programma, puoi **catturare** l'errore:
@@ -1361,10 +1463,14 @@ Ora che conosci tutti i concetti, prova questi progetti:
 6. **Mini avventura**: più stanze (usa simboli), raccogli oggetti, usa case/when per azioni, vinci trovando il tesoro!
 
 **💡 Vuoi vedere come funzionano i giochi di esempio?**
-- [Spiegazione Guessing Game](esempi/guessing_game.md) – Analisi del gioco "Indovina il Numero"
-- [Spiegazione Jungle Adventure](esempi/jungle_adventure.md) – Analisi del gioco avventura testuale
-- [Spiegazione Snake](snake/snake.md) – Game loop, Struct, Array come coda, Hash come lookup, ensure
-- [Spiegazione Labirinto](labirinto/labirinto.md) – Matrici, moduli, ereditarietà, lambda, Comparable, crea i tuoi livelli!
+- [Spiegazione Guessing Game](esempi/guessing_game.md) – loop, if/elsif, rand, gets
+- [Spiegazione Jungle Adventure](esempi/jungle_adventure.md) – classi, simboli, inventario
+- [Spiegazione Snake](snake/snake.md) – game loop, Struct, push/shift, Hash lookup, ensure
+- [Spiegazione Labirinto](labirinto/labirinto.md) – matrici, moduli, ereditarietà, lambda, Comparable
+
+**🐾 Esercizi del Labirinto**
+- [Esercizio: Crea Lola](labirinto/esercizio_lola.md) – `reject`, `super`, variabili di istanza, ereditarietà
+- [Esercizio: Più Teletrasporti](labirinto/esercizio_teletrasporti.md) – `include?`, `sample`, `%` modulo, `return nil unless`
 
 ---
 

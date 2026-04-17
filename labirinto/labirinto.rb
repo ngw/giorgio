@@ -33,7 +33,10 @@ SIMBOLI = {
   gemma:       "◆",
   teletrasporto: "◎",
   indizio:     "?",
-  nemico:      "⚉"
+  nemico:      "⚉",
+  diana:       "⚆",
+  lola:        "⚈",
+  cacca:       "·"
 }.freeze
 
 # Messaggi casuali quando il giocatore sbatte contro un muro.
@@ -135,6 +138,72 @@ class Nemico < Entita
   end
 end
 
+# ── DIANA ─────────────────────────────────────────────────────
+# Diana è la cagnolina del labirinto!
+# Eredita da Entita e include Muovibile, proprio come Nemico.
+# La differenza: Diana gira pacificamente e lascia piccole cacche
+# che sporcano gli stivali del giocatore (ma non fanno danno).
+#
+# Nota per i curiosi: Diana e Nemico condividono quasi tutto il
+# codice. In un programma più grande potremmo creare una classe
+# intermedia "EntitaMobile" da cui entrambi ereditano.
+
+class Diana < Entita
+  include Muovibile
+
+  def initialize(riga, colonna)
+    super(riga, colonna, SIMBOLI[:diana])
+    @direzioni_possibili = Muovibile::DIREZIONI.keys
+  end
+
+  # Sceglie una direzione a caso e calcola la nuova posizione.
+  def scegli_mossa_casuale
+    dir = @direzioni_possibili.sample
+    calcola_nuova_posizione(dir)
+  end
+
+  def sposta_a(riga, colonna)
+    @riga    = riga
+    @colonna = colonna
+  end
+end
+
+# ═══════════════════════════════════════════════════════════════
+# 🐾 ESERCIZIO: CREA LA CLASSE LOLA
+#
+# Lola è la sorella coraggiosa di Diana.
+# Gira per il labirinto e quando trova un nemico... lo elimina!
+#
+# Il tuo compito: completare questa classe seguendo i passi
+# descritti nel file esercizio_lola.md
+# ═══════════════════════════════════════════════════════════════
+
+class Lola < Diana
+  # ── Passo 1: cambia il simbolo di Lola ──────────────────────
+  # Diana usa SIMBOLI[:diana] (impostato in initialize).
+  # Ma Lola vuole il SUO simbolo: SIMBOLI[:lola].
+  #
+  # Suggerimento: ridefinisci initialize in questo modo:
+  #
+  #   def initialize(riga, colonna)
+  #     super(riga, colonna)        # chiama Diana#initialize
+  #     @simbolo = SIMBOLI[:lola]   # poi cambia il simbolo!
+  #   end
+
+  # ── Passo 2: elimina i nemici nella tua posizione ───────────
+  # Questo metodo riceve la lista di TUTTI i nemici del labirinto.
+  # Deve restituire la lista SENZA i nemici nella posizione di Lola.
+  #
+  # Suggerimento: usa reject con una condizione sulle coordinate:
+  #   nemici.reject { |n| n.riga == @riga && n.colonna == @colonna }
+  #
+  # ────────────────────────────────────────────────────────────
+  # Per ora Lola non fa nulla di speciale: tocca a te!
+  def elimina_nemici(nemici)
+    nemici   # ← restituisce la lista invariata. Cambia questo!
+  end
+end
+
 # ── GIOCATORE ─────────────────────────────────────────────────
 # Giocatore eredita da Entita (ha riga, colonna, simbolo)
 # e include DUE moduli: Muovibile e Descrivibile.
@@ -224,6 +293,7 @@ end
 
 class Labirinto
   attr_reader :righe, :colonne, :nome_livello, :descrizione_livello
+  attr_reader :diana, :lola, :cacce
 
   # Legenda:
   #   # = muro    . = corridoio   S = start     E = uscita
@@ -324,6 +394,9 @@ class Labirinto
     @nemici  = []
     @teletrasporti = []
     @indizi  = {}
+    @diana   = nil
+    @lola    = nil
+    @cacce   = {} # Hash [r, c] => true per le cacche di Diana
 
     # Nebbia di guerra: matrice di booleani
     @visibilita = Array.new(@righe) { Array.new(@colonne, false) }
@@ -425,6 +498,70 @@ class Labirinto
     @nemici.any? { |n| n.riga == riga && n.colonna == colonna }
   end
 
+  # ── Diana ──────────────────────────────────────────────────
+  # Piazza Diana in un corridoio libero casuale.
+  def posiziona_diana
+    pos = posizione_corridoio_libera
+    @diana = Diana.new(pos[0], pos[1]) if pos
+  end
+
+  # Muove Diana di un passo casuale e lascia una cacca dove era.
+  def muovi_diana
+    return unless @diana
+    vecchia_r, vecchia_c = @diana.riga, @diana.colonna
+    3.times do
+      nuova_pos = @diana.scegli_mossa_casuale
+      next unless nuova_pos
+      nr, nc = nuova_pos
+      next if muro?(nr, nc) || porta?(nr, nc)
+      aggiungi_cacca(vecchia_r, vecchia_c)
+      @diana.sposta_a(nr, nc)
+      return
+    end
+  end
+
+  def diana_a?(riga, colonna)
+    @diana && @diana.riga == riga && @diana.colonna == colonna
+  end
+
+  # ── Lola ───────────────────────────────────────────────────
+  # Piazza Lola in un corridoio libero casuale.
+  def posiziona_lola
+    pos = posizione_corridoio_libera
+    @lola = Lola.new(pos[0], pos[1]) if pos
+  end
+
+  # Muove Lola di un passo casuale.
+  # Restituisce il numero di nemici che Lola ha eliminato.
+  def muovi_lola
+    return 0 unless @lola
+    3.times do
+      nuova_pos = @lola.scegli_mossa_casuale
+      next unless nuova_pos
+      nr, nc = nuova_pos
+      next if muro?(nr, nc) || porta?(nr, nc)
+      @lola.sposta_a(nr, nc)
+      nemici_prima   = @nemici.length
+      @nemici        = @lola.elimina_nemici(@nemici)
+      return nemici_prima - @nemici.length
+    end
+    0
+  end
+
+  def lola_a?(riga, colonna)
+    @lola && @lola.riga == riga && @lola.colonna == colonna
+  end
+
+  # ── Cacce ──────────────────────────────────────────────────
+  def cacca_a?(riga, colonna)
+    @cacce.key?([riga, colonna])
+  end
+
+  def rimuovi_cacca(riga, colonna)
+    @cacce.delete([riga, colonna])
+  end
+
+
   # Rivela le celle intorno al giocatore.
   def rivela_area(riga, colonna, raggio = nil)
     raggio ||= @raggio
@@ -457,12 +594,18 @@ class Labirinto
                     SIMBOLI[:giocatore]
                   elsif !visibile?(r, c)
                     SIMBOLI[:nebbia]
+                  elsif diana_a?(r, c)
+                    SIMBOLI[:diana]
+                  elsif lola_a?(r, c)
+                    SIMBOLI[:lola]
                   elsif nemico_a?(r, c) && visibile?(r, c)
                     SIMBOLI[:nemico]
                   elsif @porte[[r, c]]
                     SIMBOLI[:porta]
                   elsif @indizi[[r, c]]
                     SIMBOLI[:indizio]
+                  elsif cacca_a?(r, c)
+                    SIMBOLI[:cacca]
                   elsif @oggetti[[r, c]]
                     SIMBOLI[@oggetti[[r, c]]]
                   elsif cella == "E"
@@ -496,6 +639,30 @@ class Labirinto
   def fuori_limiti?(riga, colonna)
     riga < 0 || riga >= @righe || colonna < 0 || colonna >= @colonne
   end
+
+  # Trova una cella corridoio libera da nemici, start e uscita.
+  def posizione_corridoio_libera
+    candidati = []
+    @griglia.each_with_index do |riga, r|
+      riga.each_with_index do |cella, c|
+        next if cella == "#"
+        next if [r, c] == @posizione_start
+        next if [r, c] == @posizione_uscita
+        next if @nemici.any? { |n| n.riga == r && n.colonna == c }
+        candidati << [r, c]
+      end
+    end
+    candidati.sample
+  end
+
+  # Lascia una cacca nella posizione indicata.
+  # Manteniamo al massimo 8 cacce contemporaneamente.
+  def aggiungi_cacca(riga, colonna)
+    return if [riga, colonna] == @posizione_start
+    @cacce[[riga, colonna]] = true
+    @cacce.delete(@cacce.keys.first) if @cacce.length > 8
+  end
+
 
   # Scansiona la griglia per trovare posizioni, oggetti, porte, nemici.
   def analizza_griglia
@@ -641,11 +808,25 @@ class GiocoLabirinto
     giocatore = Giocatore.new(sr, sc, nome)
     @messaggi_log = []
 
+    labirinto.posiziona_diana
+    labirinto.posiziona_lola
+
     aggiungi_messaggio("📜 #{labirinto.nome_livello}: #{labirinto.descrizione_livello}")
 
     loop do
       # I nemici si muovono a ogni turno del giocatore
       labirinto.muovi_nemici if labirinto.nemici.any?
+
+      # Diana gira e lascia cacche
+      labirinto.muovi_diana
+
+      # Lola gira e (se il bambino ha implementato il metodo) elimina nemici
+      nemici_uccisi = labirinto.muovi_lola
+      if nemici_uccisi > 0
+        punti_bonus = 30 * nemici_uccisi
+        aggiungi_messaggio("🐾 UHUUUU! Lola ha eliminato #{nemici_uccisi} #{nemici_uccisi == 1 ? 'nemico' : 'nemici'}! +#{punti_bonus} punti")
+        giocatore.aggiungi_punti(punti_bonus)
+      end
 
       # Controlla collisione con nemico dopo il loro movimento
       if labirinto.nemico_a?(giocatore.riga, giocatore.colonna)
@@ -721,6 +902,12 @@ class GiocoLabirinto
 
     giocatore.sposta_a(nr, nc)
     @mosse_totali += 1
+
+    # Cacca di Diana: sporca gli stivali ma non fa danno
+    if labirinto.cacca_a?(nr, nc)
+      labirinto.rimuovi_cacca(nr, nc)
+      aggiungi_messaggio("💩 Eww! Hai calpestato una cacca di Diana. Gli stivali sono sporchi! 👢")
+    end
 
     # Teletrasporto
     dest = labirinto.teletrasporto_a(nr, nc)
@@ -821,6 +1008,7 @@ class GiocoLabirinto
     puts "\n┌─── 🗺️  MAPPA ESPLORATA ─────────────────┐"
     puts "│ Legenda: ☺=Tu  ⚑=Uscita  ✦=Chiave       │"
     puts "│ ●=Moneta ◆=Gemma ♥=Pozione ▒=Porta       │"
+    puts "│ ⚆=Diana  ⚈=Lola  ·=Cacca               │"
     puts "│ ◎=Portale ☠=Trappola ⚉=Nemico ?=Indizio  │"
     puts "└───────────────────────────────────────────┘"
     labirinto.disegna(giocatore)
