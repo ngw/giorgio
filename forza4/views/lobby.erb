@@ -1,0 +1,29 @@
+<main class="lobby">
+  <h1>🔴 Forza 4! 🟡</h1>
+  <p class="sottotitolo">Due giocatori, due posti diversi — chi fa 4 di fila vince!</p>
+
+  <% if @errore %>
+    <p class="errore">⚠️ <%= @errore %></p>
+  <% end %>
+
+  <div class="carte">
+    <section class="card">
+      <h2>Crea una partita</h2>
+      <p>Si apre una partita e ti dà un codice da inviare al tuo amico.</p>
+      <form action="/crea" method="post">
+        <button class="btn-primario">✨ Nuova partita</button>
+      </form>
+    </section>
+
+    <section class="card">
+      <h2>Unisciti</h2>
+      <p>Inserisci il codice che ti ha mandato il tuo amico.</p>
+      <form action="/unisciti" method="post" class="form-codice">
+        <input type="text" name="codice" placeholder="Es. A3F7B2"
+               maxlength="6" required autocomplete="off" spellcheck="false"
+               class="input-codice">
+        <button class="btn-secondario">Entra →</button>
+      </form>
+    </section>
+  </div>
+</main>

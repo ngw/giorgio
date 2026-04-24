@@ -1,0 +1,48 @@
+<main>
+  <h1>🔴 Forza 4! 🟡</h1>
+
+  <% if @partita['vincitore'] %>
+    <p class="status vincitore p<%= @partita['vincitore'] %>">
+      🎉 Vince il Giocatore <%= @partita['vincitore'] %>!
+    </p>
+  <% elsif @partita['pareggio'] %>
+    <p class="status pareggio">🤝 Pareggio!</p>
+  <% else %>
+    <p class="status turno p<%= @partita['giocatore'] %>">
+      Turno del Giocatore <%= @partita['giocatore'] %>
+      <span class="disco"><%= @partita['giocatore'] == 1 ? '🔴' : '🟡' %></span>
+    </p>
+  <% end %>
+
+  <%# Pulsanti per scegliere la colonna %>
+  <div class="pulsanti-colonne">
+    <% COLS.times do |col| %>
+      <%
+        colonna_piena = !@partita['board'][0][col].nil?
+        partita_finita = @partita['vincitore'] || @partita['pareggio']
+        disabilitato = colonna_piena || partita_finita
+      %>
+      <form action="/gioca/<%= col %>" method="post" class="form-colonna">
+        <button class="pulsante-colonna" <%= disabilitato ? 'disabled' : '' %>>↓</button>
+      </form>
+    <% end %>
+  </div>
+
+  <%# Griglia del tabellone %>
+  <div class="tabellone">
+    <% @partita['board'].each_with_index do |riga, r| %>
+      <% riga.each_with_index do |cella, c| %>
+        <%
+          classe = cella ? "disco p#{cella}" : "vuoto"
+          vincente = @partita['celle_vincenti']&.include?([r, c])
+          classe += " vincente" if vincente
+        %>
+        <div class="cella <%= classe %>"></div>
+      <% end %>
+    <% end %>
+  </div>
+
+  <form action="/reset" method="post" class="form-reset">
+    <button class="pulsante-reset">🔄 Nuova Partita</button>
+  </form>
+</main>

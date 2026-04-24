@@ -1,0 +1,116 @@
+<main>
+  <%# ── Intestazione ──────────────────────────────────────────────── %>
+  <h1>🔴 Forza 4! 🟡</h1>
+
+  <% if @attende_p2 %>
+    <%# ── Aspetta il secondo giocatore ──────────────────────────── %>
+    <div class="card attesa-p2">
+      <p class="attesa-testo">⏳ In attesa del secondo giocatore…</p>
+      <p>Manda questo link al tuo amico:</p>
+      <div class="link-box">
+        <span id="link-url"><%= request.base_url %>/gioca/<%= @codice %></span>
+        <button onclick="copiLink()" class="btn-copia" title="Copia link">📋</button>
+      </div>
+      <p class="codice-hint">oppure digli il codice: <strong class="codice"><%= @codice %></strong></p>
+    </div>
+
+  <% elsif @partita['vincitore'] %>
+    <p class="status vincitore p<%= @partita['vincitore'] %>">
+      🎉 Vince il Giocatore <%= @partita['vincitore'] %>
+      <%= @partita['vincitore'] == 1 ? '🔴' : '🟡' %>
+      <% if @mio_numero == @partita['vincitore'] %>— sei tu!<% end %>
+    </p>
+
+  <% elsif @partita['pareggio'] %>
+    <p class="status pareggio">🤝 Pareggio!</p>
+
+  <% elsif @mio_turno %>
+    <p class="status turno p<%= @mio_numero %>">
+      Il tuo turno <%= @mio_numero == 1 ? '🔴' : '🟡' %>
+    </p>
+
+  <% else %>
+    <p class="status attesa">
+      ⏳ Aspetta… sta giocando l'avversario <%= @partita['giocatore'] == 1 ? '🔴' : '🟡' %>
+    </p>
+  <% end %>
+
+  <% unless @attende_p2 %>
+    <%# ── Pulsanti colonne (solo se è il mio turno e partita attiva) ── %>
+    <div class="pulsanti-colonne">
+      <% COLS.times do |col| %>
+        <%
+          colonna_piena  = !@partita['board'][0][col].nil?
+          partita_finita = @partita['vincitore'] || @partita['pareggio']
+          attivo         = @mio_turno && !colonna_piena && !partita_finita
+        %>
+        <form action="/gioca/<%= @codice %>/<%= col %>" method="post" class="form-colonna">
+          <button class="pulsante-colonna" <%= attivo ? '' : 'disabled' %>>↓</button>
+        </form>
+      <% end %>
+    </div>
+
+    <%# ── Tabellone ───────────────────────────────────────────────── %>
+    <div class="tabellone">
+      <% @partita['board'].each_with_index do |riga, r| %>
+        <% riga.each_with_index do |cella, c| %>
+          <%
+            classe   = cella ? "disco p#{cella}" : "vuoto"
+            vincente = @partita['celle_vincenti']&.include?([r, c])
+            classe  += " vincente" if vincente
+          %>
+          <div class="cella <%= classe %>"></div>
+        <% end %>
+      <% end %>
+    </div>
+
+    <% if @partita['vincitore'] || @partita['pareggio'] %>
+      <% if @mio_numero %>
+        <form action="/gioca/<%= @codice %>/reset" method="post">
+          <button class="pulsante-reset">🔄 Rivincita</button>
+        </form>
+      <% end %>
+    <% end %>
+  <% end %>
+
+  <a href="/" class="btn-esci">← Torna alla lobby</a>
+</main>
+
+<script>
+  // ── Polling: aggiorna quando cambia lo stato ──────────────────────────
+  const statoCorrente = {
+    giocatore: <%= @partita['giocatore'] %>,
+    vincitore: <%= @partita['vincitore'].nil? ? 'null' : @partita['vincitore'] %>,
+    pareggio:  <%= @partita['pareggio'] %>,
+    ha_p2:     <%= @attende_p2 ? 'false' : 'true' %>
+  };
+
+  <% if @in_attesa || @attende_p2 %>
+  function poll() {
+    fetch('/gioca/<%= @codice %>/stato')
+      .then(r => r.json())
+      .then(nuovo => {
+        if (
+          nuovo.giocatore !== statoCorrente.giocatore ||
+          nuovo.vincitore !== statoCorrente.vincitore ||
+          nuovo.pareggio  !== statoCorrente.pareggio  ||
+          nuovo.ha_p2     !== statoCorrente.ha_p2
+        ) {
+          location.reload();
+        }
+      })
+      .catch(() => {});
+  }
+  setInterval(poll, 2000);
+  <% end %>
+
+  // ── Copia link ────────────────────────────────────────────────────────
+  function copiLink() {
+    const url = document.getElementById('link-url').textContent;
+    navigator.clipboard.writeText(url).then(() => {
+      const btn = document.querySelector('.btn-copia');
+      btn.textContent = '✅';
+      setTimeout(() => btn.textContent = '📋', 2000);
+    });
+  }
+</script>

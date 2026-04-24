@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: forza4
+    runtime: ruby
+    buildCommand: bundle install
+    startCommand: bundle exec puma -p $PORT
+    envVars:
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: RACK_ENV
+        value: production
