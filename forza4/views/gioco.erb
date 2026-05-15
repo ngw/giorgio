@@ -1,6 +1,12 @@
 <main>
   <%# ── Intestazione ──────────────────────────────────────────────── %>
   <h1>🔴 Forza 4! 🟡</h1>
+  <% avversario = @partita['modo'] == 'cpu' ? 'il computer 🤖' : 'l\'avversario' %>
+  <% livello_cpu = (@partita['livello_cpu'] || 'facile').capitalize %>
+
+  <% if @partita['modo'] == 'cpu' %>
+    <p class="badge-modo">Modalita: contro il computer (livello <%= livello_cpu %>)</p>
+  <% end %>
 
   <% if @attende_p2 %>
     <%# ── Aspetta il secondo giocatore ──────────────────────────── %>
@@ -31,7 +37,7 @@
 
   <% else %>
     <p class="status attesa">
-      ⏳ Aspetta… sta giocando l'avversario <%= @partita['giocatore'] == 1 ? '🔴' : '🟡' %>
+      ⏳ Aspetta… sta giocando <%= avversario %> <%= @partita['giocatore'] == 1 ? '🔴' : '🟡' %>
     </p>
   <% end %>
 

@@ -164,4 +164,4 @@ bundle exec ruby app.rb
 
 ---
 
-[← Il codice del gioco](05_il_codice.md) | [← Torna all'indice](README.md)
+[← Il codice del gioco](05_il_codice.md) | [→ Contro il computer](08_giocare_contro_computer.md) | [← Torna all'indice](README.md)

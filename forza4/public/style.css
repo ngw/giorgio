@@ -62,6 +62,38 @@
 .btn-secondario { background: #27ae60; color: white; }
 .btn-secondario:hover { background: #1e8449; }
 
+.azioni-verticali {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.form-livelli-cpu {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.btn-cpu {
+  padding: 12px 24px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: background .15s;
+  width: 100%;
+  background: #e67e22;
+  color: white;
+}
+
+.btn-cpu:hover { background: #ca6f1e; }
+
+.btn-cpu-medio {
+  background: #d35400;
+}
+
+.btn-cpu-medio:hover { background: #b34700; }
+
 .form-codice { display: flex; flex-direction: column; gap: 8px; }
 
 .input-codice {
@@ -141,6 +173,15 @@ main {
 h1 {
   font-size: 2.4rem;
   letter-spacing: 2px;
+}
+
+.badge-modo {
+  font-size: .95rem;
+  color: #7f4f24;
+  background: #fef5e7;
+  border: 1px solid #f8c471;
+  border-radius: 999px;
+  padding: 6px 14px;
 }
 
 /* ===== Status ===== */

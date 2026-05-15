@@ -14,6 +14,7 @@ Imparerai un sacco di cose fighe usate dai programmatori veri!
 | [05 - Il codice del gioco](05_il_codice.md) | Come funziona Forza 4 |
 | [06 - Multiplayer](06_multiplayer.md) | Due giocatori, due browser, un server |
 | [07 - Debian su Chromebook](07_debian_chromebook.md) | Installare Ruby e avviare il gioco su Linux |
+| [08 - Contro il computer](08_giocare_contro_computer.md) | Aggiungere una CPU a livelli |
 
 ## Concetti Ruby che incontrerai
 
@@ -35,6 +36,8 @@ così sai già cosa aspettarti:
 | `session[]` | Memoria per browser | Ricorda chi sei tra una richiesta e l'altra |
 | `content_type :json` | Polling | Dice al browser che la risposta è JSON, non HTML |
 | `to_json` / `.to_i` | Conversioni | Converte tra tipi: Hash→stringa JSON, stringa→numero |
+| `sample` | CPU facile | Sceglie un elemento casuale da un array |
+| `case/when` | Livello CPU | Sceglie una strategia in base al livello |
 | `redirect` | Dopo una mossa | Manda il browser su un'altra pagina (pattern PRG) |
 | `halt` | Errori | Ferma la richiesta e risponde con un codice HTTP |
 | `MUTEX.synchronize { }` | Thread safety | Il blocco dentro viene eseguito da un solo thread alla volta |

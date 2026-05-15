@@ -9,10 +9,16 @@
   <div class="carte">
     <section class="card">
       <h2>Crea una partita</h2>
-      <p>Si apre una partita e ti dà un codice da inviare al tuo amico.</p>
-      <form action="/crea" method="post">
-        <button class="btn-primario">✨ Nuova partita</button>
-      </form>
+      <p>Scegli se giocare con un amico o contro il computer.</p>
+      <div class="azioni-verticali">
+        <form action="/crea" method="post">
+          <button class="btn-primario">👫 Con un amico</button>
+        </form>
+        <form action="/crea_cpu" method="post" class="form-livelli-cpu">
+          <button name="livello" value="facile" class="btn-cpu">🤖 CPU facile</button>
+          <button name="livello" value="medio" class="btn-cpu btn-cpu-medio">🧠 CPU medio</button>
+        </form>
+      </div>
     </section>
 
     <section class="card">
