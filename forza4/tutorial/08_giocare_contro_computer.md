@@ -62,6 +62,16 @@ La CPU medio usa una mini strategia in 3 passi:
 
 Questa e gia una CPU abbastanza furba.
 
+### La logica in parole super semplici
+
+Pensa alla CPU come a un bambino che prima guarda la mossa piu importante:
+
+1. Posso vincere ORA?
+2. Se non posso, il mio avversario puo vincere SUBITO?
+3. Se nessuno vince subito, faccio una mossa buona (centro) o casuale.
+
+Questa idea si chiama priorita: prima il problema urgente, poi il resto.
+
 ### Come capisce se puo vincere subito
 
 La parte importante e questa: la CPU prova una colonna "finta" su una copia
@@ -108,6 +118,31 @@ end
 
 Se trova una colonna in cui tu vinceresti al prossimo turno,
 la CPU ci gioca subito per bloccare.
+
+### Esempio completo di un turno CPU medio
+
+Facciamo finta che sia il turno della CPU (giallo):
+
+1. controlla tutte le colonne disponibili
+2. in nessuna colonna trova vittoria immediata
+3. prova a fingere la tua mossa (rosso) su ogni colonna
+4. scopre che nella colonna 2 tu vinceresti
+5. quindi gioca colonna 2 per bloccarti
+
+Risultato: non vince subito, ma evita di perdere al prossimo turno.
+
+Questa e una scelta logica e intelligente.
+
+### Pseudocodice bambino
+
+```text
+se posso vincere adesso:
+	gioco la mossa vincente
+altrimenti se l'avversario puo vincere adesso:
+	gioco la mossa che lo blocca
+altrimenti:
+	gioco centro (se libero), altrimenti una colonna valida
+```
 
 ## 4. Quando gioca la CPU?
 

@@ -86,6 +86,35 @@ def trova_vincitore(board, riga, col, giocatore)
 end
 ```
 
+### Perche `>= 4` e non `== 4`?
+
+Nel codice trovi questa riga:
+
+```ruby
+return celle if celle.length >= 4
+```
+
+Usiamo `>= 4` perche in Forza 4 puoi avere anche 5 o 6 dischi in fila.
+Se controllassimo solo `== 4`, una fila da 5 non verrebbe riconosciuta bene.
+
+Quindi la regola giusta e:
+
+- 4 di fila: vittoria
+- 5 di fila: vittoria
+- 6 di fila: vittoria
+
+### Mini esempio logico (come ragiona il controllo)
+
+Immagina che l'ultima mossa sia in mezzo a una fila rossa:
+
+1. parti dalla pedina appena giocata
+2. vai a destra finche trovi pedine uguali
+3. torna indietro e vai a sinistra finche trovi pedine uguali
+4. conta quante celle hai raccolto in totale
+5. se sono almeno 4, hai vinto
+
+Questo trucco funziona uguale anche in verticale e in diagonale.
+
 ## La sessione: la memoria del gioco
 
 HTTP non ricorda nulla tra una richiesta e l'altra —
