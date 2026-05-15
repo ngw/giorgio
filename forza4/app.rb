@@ -137,6 +137,10 @@ get '/' do
   erb :lobby
 end
 
+get '/crea_cpu' do
+  redirect '/'
+end
+
 post '/crea' do
   codice = SecureRandom.hex(3).upcase
   MUTEX.synchronize { GAMES[codice] = nuova_partita(1 => session[:sid]) }
