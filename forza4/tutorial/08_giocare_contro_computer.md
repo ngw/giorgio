@@ -62,6 +62,53 @@ La CPU medio usa una mini strategia in 3 passi:
 
 Questa e gia una CPU abbastanza furba.
 
+### Come capisce se puo vincere subito
+
+La parte importante e questa: la CPU prova una colonna "finta" su una copia
+del tabellone, senza toccare quello vero.
+
+Per ogni colonna disponibile:
+
+1. copia la griglia
+2. fa cadere un disco giallo nella copia
+3. controlla se quella mossa crea una vittoria
+4. se si, sceglie subito quella colonna
+
+Codice reale (semplificato):
+
+```ruby
+col_vittoria = disponibili.find do |col|
+	copia = duplica_board(board)
+	riga  = inserisci_disco(copia, col, 2)
+	riga && trova_vincitore(copia, riga, col, 2)
+end
+```
+
+Se `col_vittoria` esiste, la CPU gioca li e chiude la partita.
+
+### Esempio veloce di vittoria CPU medio
+
+Immagina che in basso ci siano gia 3 gialli consecutivi nelle colonne
+1, 2 e 3, e la colonna 4 sia libera.
+
+Quando la CPU prova la colonna 4 nella copia della griglia, trova 4 in fila,
+quindi sceglie quella colonna e vince subito.
+
+### Come blocca la tua vittoria
+
+Se non puo vincere lei, fa lo stesso test ma fingendo la tua mossa (rosso):
+
+```ruby
+col_blocco = disponibili.find do |col|
+	copia = duplica_board(board)
+	riga  = inserisci_disco(copia, col, 1)
+	riga && trova_vincitore(copia, riga, col, 1)
+end
+```
+
+Se trova una colonna in cui tu vinceresti al prossimo turno,
+la CPU ci gioca subito per bloccare.
+
 ## 4. Quando gioca la CPU?
 
 Dopo la tua mossa, se la partita non e finita, il turno passa al giocatore 2.
