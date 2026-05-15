@@ -106,6 +106,41 @@ partita = session[:partita]
 È come se il server desse a ognuno un foglio con scritto il suo stato
 e glielo riprendesse ogni volta che torna.
 
+## Cos'e un Mutex (spiegato facile)
+
+Un `Mutex` e un "lucchetto" per il codice.
+
+Serve quando due richieste possono arrivare quasi nello stesso istante:
+
+- due click molto vicini nel tempo
+- due giocatori che agiscono insieme
+- il player e la CPU che aggiornano lo stato della partita
+
+Nel nostro server esiste una memoria condivisa (`GAMES`) con tutte le partite.
+Se due richieste la modificano nello stesso momento, i dati possono
+mescolarsi e creare bug (questo si chiama *race condition*).
+
+Con il `Mutex`, solo una richiesta alla volta entra nella parte delicata:
+
+```ruby
+MUTEX = Mutex.new
+
+MUTEX.synchronize do
+  # qui dentro passa una sola richiesta per volta
+  partita = GAMES[codice]
+  # aggiorna turno, board, vincitore...
+end
+```
+
+Pensa a un bagno con una sola chiave:
+
+1. chi prende la chiave entra
+2. gli altri aspettano fuori
+3. quando esce, rimette la chiave
+4. entra il prossimo
+
+Il `Mutex` fa esattamente questo, ma con il codice.
+
 ## Il giro completo di una mossa
 
 Ecco cosa succede quando premi la colonna 3:
